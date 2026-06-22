@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Study Group Finder</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f5f3ed;
+    }
+
+    .nav {
+      background: #2d5016;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2d5016, #4a7c2e);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .container {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 15px 30px;
+      background: #2d5016;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .page { display: none; }
+    .active { display: block; }
+
+  </style>
+</head>
+
+<body>
+
+<div class="nav">
+  <a onclick="show('home')">🏠 Home</a>
+  <a onclick="show('system')">📚 Study Group</a>
+  <a onclick="show('about')">ℹ️ About</a>
+</div>
+
+<div id="home" class="page active">
+  <div class="hero">
+    <h1>📚 Study Group Finder</h1>
+    <p>Find and join study groups easily</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>This system helps students create and join study groups.</p>
+    </div>
+  </div>
+</div>
+
+<div id="system" class="page">
+  <div class="container">
+    <div class="card">
+      <h2>Open System</h2>
+
+      <a class="btn"
+      href="https://script.google.com/macros/s/AKfycbz7n14GBF4BnNkEXW9bj0UC1Targyicb3wrbBOxeiwacMnUJDiIHcWKDOlL1aK5HfwkTA/exec"
+      target="_blank">
+        🚀 Open Study Group System
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<div id="about" class="page">
+  <div class="container">
+    <div class="card">
+      <h2>About</h2>
+      <p>Built using Google Apps Script + Google Sheets</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(page){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+</script>
+
+</body>
+</html>
