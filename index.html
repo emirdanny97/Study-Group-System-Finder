@@ -1,100 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Study Group Finder</title>
-
-  <!-- ✅ ANIMATION LIBRARY -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
+  <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin:0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f6fb;
+      background:#f4f6fb;
     }
 
-    /* LOADING SCREEN */
-    #loader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #4a67ff;
-      color: white;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 24px;
-      z-index: 9999;
-    }
-
-    /* NAV */
+    /* NAVBAR */
     .nav {
       display:flex;
-      justify-content: space-around;
-      padding:15px;
+      justify-content: space-between;
+      padding:15px 20px;
       background:#4a67ff;
       color:white;
-      box-shadow:0 2px 10px rgba(0,0,0,0.2);
+      align-items:center;
     }
 
-    .nav a {
-      color:white;
+    .nav h2 { margin:0; font-size:18px; }
+
+    .nav button {
+      background:white;
+      border:none;
+      padding:6px 12px;
+      border-radius:6px;
       cursor:pointer;
-      font-weight:600;
     }
 
-    /* HERO */
-    .hero {
-      text-align:center;
-      padding:80px 20px;
-      background: linear-gradient(135deg,#4a67ff,#6c8cff);
-      color:white;
-    }
-
-    .hero h1 {
-      font-size:2rem;
-    }
-
+    /* MAIN CONTAINER */
     .container {
-      padding: 20px;
+      padding:20px;
+      max-width:900px;
+      margin:auto;
     }
 
     /* CARD */
     .card {
       background:white;
-      padding:25px;
       border-radius:12px;
-      max-width:500px;
-      margin: auto;
-      box-shadow:0 6px 20px rgba(0,0,0,0.1);
-      text-align:center;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
     }
 
-    .btn {
-      margin-top:20px;
-      padding:14px;
-      display:inline-block;
+    h3 { margin-top:0; }
+
+    input, textarea {
+      width:100%;
+      padding:10px;
+      margin-top:10px;
+      border-radius:8px;
+      border:1px solid #ccc;
+    }
+
+    button.primary {
+      width:100%;
+      margin-top:10px;
+      padding:12px;
       background:#4a67ff;
       color:white;
+      border:none;
       border-radius:8px;
-      text-decoration:none;
-      transition:0.3s;
+      cursor:pointer;
     }
 
-    .btn:hover {
-      transform: scale(1.05);
-      background:#6c8cff;
+    /* GROUP LIST */
+    .group {
+      border:1px solid #ddd;
+      padding:15px;
+      border-radius:10px;
+      margin-top:10px;
     }
 
-    .page { display:none; }
+    .group button {
+      margin-top:10px;
+      padding:8px;
+      background:#4a67ff;
+      color:white;
+      border:none;
+      border-radius:6px;
+    }
+
+    .full {
+      background:#ffe8e8;
+    }
+
+    /* SECTIONS */
+    .section { display:none; }
     .active { display:block; }
 
-    /* MOBILE */
-    @media (max-width:600px){
-      .hero h1 { font-size:1.5rem; }
-      .card { margin:10px; }
+    /* LOGIN PAGE */
+    #loginPage {
+      display:flex;
+      height:100vh;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .login-box {
+      width:320px;
+      background:white;
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.15);
     }
 
   </style>
@@ -102,72 +114,227 @@
 
 <body>
 
-<!-- ✅ LOADER -->
-<div id="loader">🚀 Loading System...</div>
+<!-- LOGIN PAGE -->
+<div id="loginPage">
 
-<!-- NAV -->
-<div class="nav">
-  <a onclick="show('home')">🏠 Home</a>
-  <a onclick="show('system')">📚 System</a>
-  <a onclick="show('about')">ℹ️ About</a>
+  <div class="login-box">
+    <h3>🔐 Login</h3>
+
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button class="primary" onclick="loginUser()">Login</button>
+
+    <p id="msg"></p>
+
+    <hr>
+
+    <h4>Register</h4>
+    <input id="newUser" placeholder="Username">
+    <input id="newPass" type="password" placeholder="Password">
+
+    <button class="primary" onclick="registerUser()">Create Account</button>
+
+  </div>
+
 </div>
 
-<!-- HOME -->
-<div id="home" class="page active">
-  <div class="hero animate__animated animate__fadeIn">
-    <h1>📚 Study Group Finder</h1>
-    <p>Connect. Learn. Succeed.</p>
+<!-- MAIN SYSTEM -->
+<div id="system" style="display:none;">
+
+  <!-- NAVBAR -->
+  <div class="nav">
+    <h2>📚 Study Finder</h2>
+
+    <div>
+      <button onclick="showSection('dashboard')">Dashboard</button>
+      <button onclick="showSection('groups')">Groups</button>
+      <button onclick="showSection('profile')">Profile</button>
+      <button onclick="logout()">Logout</button>
+    </div>
   </div>
 
   <div class="container">
-    <div class="card animate__animated animate__fadeInUp">
-      <h2>Welcome</h2>
-      <p>Find and join study groups easily with smart system integration.</p>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section active card">
+      <h3>📊 Dashboard</h3>
+      <p>Total Groups: <span id="totalGroups"></span></p>
+      <p>Total Members: <span id="totalMembers"></span></p>
     </div>
-  </div>
-</div>
 
-<!-- SYSTEM -->
-<div id="system" class="page">
-  <div class="container">
-    <div class="card animate__animated animate__zoomIn">
+    <!-- CREATE GROUP -->
+    <div id="groups" class="section">
 
-      <h2>🚀 Launch System</h2>
-      <p>Access the study group platform below</p>
+      <div class="card">
+        <h3>Create Group</h3>
 
-      <a class="btn"
-      href="https://script.google.com/macros/s/AKfycbz7n14GBF4BnNkEXW9bj0UC1Targyicb3wrbBOxeiwacMnUJDiIHcWKDOlL1aK5HfwkTA/exec"
-      target="_blank">
-        Open System
-      </a>
+        <input id="name" placeholder="Your Name">
+        <input id="subject" placeholder="Subject">
+        <input id="topic" placeholder="Topic">
+        <textarea id="desc"></textarea>
+        <input id="contact" placeholder="WhatsApp">
+        <input id="max" placeholder="Max Members">
+
+        <button class="primary" onclick="create()">Create Group</button>
+      </div>
+
+      <div class="card">
+        <h3>🔍 Find Groups</h3>
+        <input id="search" placeholder="Search..." onkeyup="filter()">
+        <div id="list"></div>
+      </div>
 
     </div>
-  </div>
-</div>
 
-<!-- ABOUT -->
-<div id="about" class="page">
-  <div class="container">
-    <div class="card animate__animated animate__fadeInUp">
-      <h2>About</h2>
-      <p>This system uses Google Apps Script & Google Sheets to manage study groups dynamically.</p>
+    <!-- PROFILE -->
+    <div id="profile" class="section card">
+      <h3>👤 Profile</h3>
+      <p>Username: <span id="profileName"></span></p>
+      <p>Role: <span id="profileRole"></span></p>
     </div>
+
   </div>
+
 </div>
 
 <script>
 
-// LOADING SCREEN
-window.onload = function(){
-  setTimeout(()=>{
-    document.getElementById("loader").style.display = "none";
-  },1500);
+let groups = [];
+
+// ✅ LOGIN
+function loginUser(){
+
+  google.script.run.withSuccessHandler(function(res){
+
+    if(res.status=="success"){
+
+      localStorage.setItem("user", user.value);
+      localStorage.setItem("role", res.role);
+
+      loginPage.style.display="none";
+      system.style.display="block";
+
+      profileName.innerText = user.value;
+      profileRole.innerText = res.role;
+
+      load();
+
+    } else {
+      msg.innerText="Invalid login";
+    }
+
+  }).login(user.value, pass.value);
 }
 
-// PAGE NAVIGATION
-function show(page){
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
+// ✅ AUTO LOGIN
+window.onload = function(){
+
+  let u = localStorage.getItem("user");
+
+  if(u){
+    loginPage.style.display="none";
+    system.style.display="block";
+
+    profileName.innerText = u;
+    profileRole.innerText = localStorage.getItem("role");
+
+    load();
+  }
+}
+
+// ✅ LOGOUT
+function logout(){
+  localStorage.clear();
+  location.reload();
+}
+
+// ✅ REGISTER
+function registerUser(){
+  google.script.run.withSuccessHandler(alert)
+    .register(newUser.value,newPass.value);
+}
+
+// ✅ LOAD GROUPS
+function load(){
+  google.script.run.withSuccessHandler(function(res){
+    groups=res;
+    display(res);
+    dashboard();
+  }).getGroups();
+}
+
+// ✅ DISPLAY
+function display(data){
+
+  let html="";
+
+  data.slice(1).forEach(r=>{
+
+    let full = r[8]=="Full" ? "full" : "";
+
+    html+=`
+      <div class="group ${full}">
+        <b>${r[2]}</b> (${r[0]})<br>
+        Members: ${r[7]}/${r[6]}<br>
+        Status: ${r[8]}
+        <button onclick="join('${r[0]}')">Join</button>
+      </div>
+    `;
+  });
+
+  list.innerHTML=html;
+}
+
+// ✅ SEARCH
+function filter(){
+  let k=search.value.toLowerCase();
+  display(groups.filter(r=>r[2].toLowerCase().includes(k)));
+}
+
+// ✅ JOIN
+function join(id){
+  let name=prompt("Your name");
+  if(name){
+    google.script.run.withSuccessHandler(alert)
+      .joinGroup(id,name);
+  }
+}
+
+// ✅ CREATE
+function create(){
+
+  const data={
+    name:name.value,
+    subject:subject.value,
+    topic:topic.value,
+    description:desc.value,
+    contact:contact.value,
+    maxMembers:max.value
+  };
+
+  google.script.run.withSuccessHandler(alert)
+    .createGroup(data);
+}
+
+// ✅ DASHBOARD
+function dashboard(){
+
+  let total = groups.length - 1;
+  let members = 0;
+
+  groups.slice(1).forEach(g=>{
+    members += Number(g[7]);
+  });
+
+  totalGroups.innerText = total;
+  totalMembers.innerText = members;
+}
+
+// ✅ NAVIGATION
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
 </script>
